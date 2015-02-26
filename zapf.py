@@ -1,82 +1,47 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import pygame.mixer
 from time import sleep
 import RPi.GPIO as GPIO
 from sys import exit
 from numpy import loadtxt
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(25, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(15, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(17, GPIO.OUT)
-GPIO.output(17,0)
+"""Init(GPIO and audio):"""
+GPIO.setmode(GPIO.BCM)						
+GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)	
+GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)	
+GPIO.setup(25, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)	
+GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)	
+GPIO.setup(15, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)	
+GPIO.setup(17, GPIO.OUT)				
+GPIO.output(17,0)					
 pygame.mixer.init(48000, -16, 1, 1024)
-
-
-soundfile = open('sounds.txt', 'r')
-adresses = soundfile.readlines()
-soundlist = []
-
-
-for i in range(0, len(adresses)-1):
-    """Will append the sounds to soundlist. If the sound ist longer than 5s
-    it will be replaced by 'WilhelmScream.wav'"""
-    soundi = pygame.mixer.Sound(str(adresses[i]))
-    if soundi.get_length() >= 5:
-        soundi = pygame.mixer.Sound("WilhelmScream.wav")
-    soundlist.append(soundi)
-
-
-# Sound0 = pygame.mixer.Sound("applause.wav")
-# Sound1 = pygame.mixer.Sound("WilhelmScream.wav")
-# Sound2 = pygame.mixer.Sound("buzzer.wav")
-# Sound3 = pygame.mixer.Sound ("CastleThunder.wav")
-# Sound4 = pygame.mixer.Sound("clap.wav")
-# Sound5 = pygame.mixer.Sound("applause.wav")
-# Sound6 = pygame.mixer.Sound("applause.wav")
-# Sound7 = pygame.mixer.Sound("applause.wav")
-# Sound8 = pygame.mixer.Sound("applause.wav")
-# Sound9 = pygame.mixer.Sound("applause.wav")
-
 Channel0 = pygame.mixer.Channel(0)
-Channel1 = pygame.mixer.Channel(1)
-Channel2 = pygame.mixer.Channel(2)
-Channel3 = pygame.mixer.Channel(3)
-Channel4 = pygame.mixer.Channel(4)
-Channel5 = pygame.mixer.Channel(5)
-Channel6 = pygame.mixer.Channel(6)
-Channel7 = pygame.mixer.Channel(7)
-#Channel8 = pygame.mixer.Channel(8)
-#Channel9 = pygame.mixer.Channel(9)
+pins=[25,24,23,18,15]
 
 
+"""reading in the sound file names from config and creating the sounds:"""
+soundfile = open('sounds.txt', 'r')	
+adresses = soundfile.read().splitlines()
+soundlist = []				
+for i in range(0, len(adresses)-1):
+	if adresses[i][0] != '#':
+		print str(adresses[i])
+		temp = pygame.mixer.Sound(str(adresses[i]))
+		if temp.get_length() >= 5:
+			temp = pygame.mixer.Sound("WilhelmScream.wav")
+		soundlist.append(temp)
+
+
+"""switch detection and playing sounds:"""
 print "fertig"
 GPIO.output(17,1)
 while True:
-    try:
-        if GPIO.input(25):
-            print "0"
-            Channel0.play(soundlist[0])
-            sleep.(soundlist[0].get_length())
-            # Channel0.play(Sound0)
-			#sleep(Sound0.get_length())
-		if GPIO.input(24):
-			print "1"
-			Channel0.play(Sound1)
-			sleep(Sound1.get_length())
-		if GPIO.input(23):
-			print "2"
-			Channel0.play(Sound2)
-			sleep(Sound2.get_length())
-		if GPIO.input(18):
-			print "3"#
-			Channel0.play(Sound3)
-			sleep(Sound3.get_length())
-		if GPIO.input(15):
-			print "4"
-			Channel0.play(Sound4)
-			sleep(Sound4.get_length())
+	try:
+		for i in range(len(pins)):
+        		if GPIO.input(pins[i]):
+				print i
+				Channel0.play(soundlist[i])
+				sleep(soundlist[i].get_length())
 	except KeyboardInterrupt:
 		GPIO.cleanup()
