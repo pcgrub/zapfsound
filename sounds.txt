@@ -1,0 +1,17 @@
+# sounds config for zapfsound soundboard
+#
+# to add a sound just simply add a line with the path of your sound file.
+#
+# sound files need to be in .wav format and only the first 10 sounds
+# will be added.
+#
+# sounds that are too long will be replaced by a default sound.
+# if less than 10 sounds are given empty the remaining sound spaces will also be
+# filled up with the default sound.
+#
+applause.wav
+WilhelmScream.wav
+CastleThunder.wav
+clap.wav
+buzzer.wav
+
