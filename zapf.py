@@ -2,6 +2,8 @@ import pygame.mixer
 from time import sleep
 import RPi.GPIO as GPIO
 from sys import exit
+from numpy import loadtxt
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
@@ -13,16 +15,30 @@ GPIO.output(17,0)
 pygame.mixer.init(48000, -16, 1, 1024)
 
 
-Sound0 = pygame.mixer.Sound("applause.wav")
-Sound1 = pygame.mixer.Sound("WilhelmScream.wav")
-Sound2 = pygame.mixer.Sound("buzzer.wav")
-Sound3 = pygame.mixer.Sound ("CastleThunder.wav")
-Sound4 = pygame.mixer.Sound("clap.wav")
-Sound5 = pygame.mixer.Sound("applause.wav")
-Sound6 = pygame.mixer.Sound("applause.wav")
-Sound7 = pygame.mixer.Sound("applause.wav")
-Sound8 = pygame.mixer.Sound("applause.wav")
-Sound9 = pygame.mixer.Sound("applause.wav")
+soundfile = open('sounds.txt', 'r')
+adresses = soundfile.readlines()
+soundlist = []
+
+
+for i in range(0, len(adresses)-1):
+    """Will append the sounds to soundlist. If the sound ist longer than 5s
+    it will be replaced by 'WilhelmScream.wav'"""
+    soundi = pygame.mixer.Sound(str(adresses[i]))
+    if soundi.get_length() >= 5:
+        soundi = pygame.mixer.Sound("WilhelmScream.wav")
+    soundlist.append(soundi)
+
+
+# Sound0 = pygame.mixer.Sound("applause.wav")
+# Sound1 = pygame.mixer.Sound("WilhelmScream.wav")
+# Sound2 = pygame.mixer.Sound("buzzer.wav")
+# Sound3 = pygame.mixer.Sound ("CastleThunder.wav")
+# Sound4 = pygame.mixer.Sound("clap.wav")
+# Sound5 = pygame.mixer.Sound("applause.wav")
+# Sound6 = pygame.mixer.Sound("applause.wav")
+# Sound7 = pygame.mixer.Sound("applause.wav")
+# Sound8 = pygame.mixer.Sound("applause.wav")
+# Sound9 = pygame.mixer.Sound("applause.wav")
 
 Channel0 = pygame.mixer.Channel(0)
 Channel1 = pygame.mixer.Channel(1)
@@ -39,11 +55,13 @@ Channel7 = pygame.mixer.Channel(7)
 print "fertig"
 GPIO.output(17,1)
 while True:
-	try:
-		if GPIO.input(25):
-			print "0"
-			Channel0.play(Sound0)
-			sleep(Sound0.get_length())
+    try:
+        if GPIO.input(25):
+            print "0"
+            Channel0.play(soundlist[0])
+            sleep.(soundlist[0].get_length())
+            # Channel0.play(Sound0)
+			#sleep(Sound0.get_length())
 		if GPIO.input(24):
 			print "1"
 			Channel0.play(Sound1)
