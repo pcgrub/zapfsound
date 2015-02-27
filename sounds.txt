@@ -9,7 +9,7 @@
 # if less than 10 sounds are given empty the remaining sound spaces will also be
 # filled up with the default sound.
 #
-applause.wav
+buzz_physikmathematikphilosophie.wav
 WilhelmScream.wav
 CastleThunder.wav
 clap.wav
