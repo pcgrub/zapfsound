@@ -16,7 +16,7 @@ def setting_pins_up(pins):
     GPIO.output(0, 0)
     GPIO.output(1, 1)
 
-pins = [18, 17, 21, 22, 23, 24, 10, 9, 11, 25] #pins for for soundboard buttons
+pins = [18, 17, 21, 22, 23, 24, 10, 9, 11, 25, 8, 7] #pins for for soundboard buttons
 setting_pins_up(pins)
 while True:
     try:
