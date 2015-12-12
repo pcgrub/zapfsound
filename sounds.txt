@@ -14,4 +14,7 @@ WilhelmScream.wav
 CastleThunder.wav
 clap.wav
 buzzer.wav
+laugh.wav
+Scream.wav
+applause.wav
 
