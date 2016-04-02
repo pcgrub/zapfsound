@@ -27,9 +27,9 @@ def reading_in(pins):
     for i in range(len(adresses)-1):
         if adresses[i][0] != '#':
             print str(adresses[i])
-            temp = pygame.mixer.Sound(str(adresses[i]))
+            temp = pygame.mixer.Sound("/home/pi/wavsounds/"+str(adresses[i]))
             if (temp.get_length() >= 5 or temp.get_length() <= 0.1):
-                temp = pygame.mixer.Sound("WilhelmScream.wav")
+                temp = pygame.mixer.Sound("/home/pi/wavsounds/WilhelmScream.wav")
             soundlist.append(temp)
     if len(soundlist) < 10:
         for i in range(len(soundlist),len(pins)):
