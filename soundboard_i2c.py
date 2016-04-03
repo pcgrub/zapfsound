@@ -18,7 +18,7 @@ OLATB  = 0x15 # Register for outputs on B
 def setup_buttons():
 	bus.write_byte_data(DEVICE,IODIRA,0xFF) # Set all pins on GPIOA to inputs
 	bus.write_byte_data(DEVICE,IODIRB,0xF8) # Set last 5 pins of GPIOB to inputs
-    bus.write_byte_data(DEVICE,OLATB,0x00)
+    	bus.write_byte_data(DEVICE,OLATB,0x00)
 
 
 def check_switch(number):
@@ -54,7 +54,7 @@ def reading_in(pins):
                 temp = pygame.mixer.Sound(path+"WilhelmScream.wav")
             soundlist.append(temp)
     if len(soundlist) < 10:
-        for i in range(len(soundlist),len(buttons)):
+        for i in range(len(soundlist),len(pins)):
             soundlist.append(pygame.mixer.Sound(path+"WilhelmScream.wav"))
     soundfile.close()
     return soundlist
@@ -69,11 +69,11 @@ def main():
 
     soundlist = reading_in(buttons)
     print "fertig"
-    bus.write_byte_data(DEVICE,OLATB,0x01) # switching on green LED
+    bus.write_byte_data(DEVICE,OLATB,0x05) # switching on green LED
     while True:
         try:
-            for i in buttons:
-                if check_switch(i): #testing soundpins
+            for i,val in enumerate(buttons):
+                if check_switch(val): #testing soundpins
                     Channel0.play(soundlist[i])
                     sleep(soundlist[i].get_length())
 
